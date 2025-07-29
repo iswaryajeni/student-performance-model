@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, render_template
 import joblib
 
 app = Flask(__name__)
-model = joblib.load('student_model.pkl')
+model = joblib.load('model.pkl') 
 
 @app.route('/')
 def home():
@@ -11,14 +11,12 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     age = int(request.form['age'])
-    gender = 0 if request.form['gender'] == 'Male' else 1
-    hours = float(request.form['studyhours'])
+    gender = 1 if request.form['gender'] == 'Male' else 0
+    studyhours = float(request.form['studyhours'])
     attendance = float(request.form['attendance'])
 
-    pred = model.predict([[age, gender, hours, attendance]])[0]
-    result = "Pass" if pred == 1 else "Fail"
-
-    return render_template('index.html', prediction=result)
+    prediction = model.predict([[age, gender, studyhours, attendance]])[0]
+    return render_template('index.html', prediction=prediction)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=port)

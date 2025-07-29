@@ -1,7 +1,6 @@
 services:
   - type: web
-    name: student-performance-app
+    name: student-performance-model
     env: python
-    plan: free
     buildCommand: "pip install -r requirements.txt"
     startCommand: "python app.py"
